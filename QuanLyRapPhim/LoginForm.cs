@@ -20,18 +20,22 @@ namespace QuanLyRapPhim
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            if(database.Login(usernameTextBox.Text, passwordTextBox.Text))
-            {
-                MessageBox.Show("Đăng nhập thành công!", "LOGIN", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MainForm mainForm = new MainForm();
-                this.Hide();
-                mainForm.Show();
-            }
-            else
-            {
-                MessageBox.Show("Đăng nhập thất bại!", "LOGIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            
+            //if (database.Login(usernameTextBox.Text, passwordTextBox.Text))
+            //{
+            //    MessageBox.Show("Đăng nhập thành công!", "LOGIN", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    MainForm mainForm = new MainForm();
+            //    this.Hide();
+            //    mainForm.Show();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Đăng nhập thất bại!", "LOGIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+
+
+            MainForm mainForm = new MainForm();
+            this.Hide();
+            mainForm.Show();
         }
 
         private void configDatabaseBtn_Click(object sender, EventArgs e)

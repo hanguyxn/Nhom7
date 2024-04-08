@@ -39,7 +39,6 @@
             this.theLoaiComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.dateTimeSanXuat = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.daoDienTxt = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -47,6 +46,7 @@
             this.phimSuaLabel = new System.Windows.Forms.Label();
             this.luuBtn = new System.Windows.Forms.Button();
             this.maPhimTxt = new System.Windows.Forms.TextBox();
+            this.namSanXuatTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label3
@@ -116,10 +116,6 @@
             // theLoaiComboBox
             // 
             this.theLoaiComboBox.FormattingEnabled = true;
-            this.theLoaiComboBox.Items.AddRange(new object[] {
-            "18+",
-            "Hài hước",
-            "Tình cảm"});
             this.theLoaiComboBox.Location = new System.Drawing.Point(474, 205);
             this.theLoaiComboBox.Name = "theLoaiComboBox";
             this.theLoaiComboBox.Size = new System.Drawing.Size(200, 28);
@@ -142,13 +138,6 @@
             this.label6.Size = new System.Drawing.Size(72, 20);
             this.label6.TabIndex = 21;
             this.label6.Text = "Sản xuất";
-            // 
-            // dateTimeSanXuat
-            // 
-            this.dateTimeSanXuat.Location = new System.Drawing.Point(474, 158);
-            this.dateTimeSanXuat.Name = "dateTimeSanXuat";
-            this.dateTimeSanXuat.Size = new System.Drawing.Size(200, 26);
-            this.dateTimeSanXuat.TabIndex = 20;
             // 
             // label5
             // 
@@ -208,18 +197,25 @@
             this.maPhimTxt.Size = new System.Drawing.Size(176, 26);
             this.maPhimTxt.TabIndex = 26;
             // 
+            // namSanXuatTextBox
+            // 
+            this.namSanXuatTextBox.Location = new System.Drawing.Point(474, 158);
+            this.namSanXuatTextBox.Name = "namSanXuatTextBox";
+            this.namSanXuatTextBox.Size = new System.Drawing.Size(200, 26);
+            this.namSanXuatTextBox.TabIndex = 27;
+            // 
             // SuaPhimForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(747, 317);
+            this.Controls.Add(this.namSanXuatTextBox);
             this.Controls.Add(this.maPhimTxt);
             this.Controls.Add(this.luuBtn);
             this.Controls.Add(this.phimSuaLabel);
             this.Controls.Add(this.theLoaiComboBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.dateTimeSanXuat);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.daoDienTxt);
             this.Controls.Add(this.label4);
@@ -253,7 +249,6 @@
         private System.Windows.Forms.ComboBox theLoaiComboBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DateTimePicker dateTimeSanXuat;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox daoDienTxt;
         private System.Windows.Forms.Label label4;
@@ -261,5 +256,6 @@
         private System.Windows.Forms.Label phimSuaLabel;
         private System.Windows.Forms.Button luuBtn;
         private System.Windows.Forms.TextBox maPhimTxt;
+        private System.Windows.Forms.TextBox namSanXuatTextBox;
     }
 }

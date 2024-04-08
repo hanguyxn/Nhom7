@@ -13,6 +13,8 @@ using System.Windows.Forms;
 
 namespace QuanLyRapPhim
 {
+    // Định nghĩa lớp ComboBoxItem để lưu trữ Text và Value của mỗi mục trong ComboBox
+    
     public partial class MainForm : Form
     {
         private QuanLyPhimControl quanLyPhimControl; // Khai báo control ThemPhimControl
@@ -22,8 +24,6 @@ namespace QuanLyRapPhim
         public MainForm()
         {
             InitializeComponent();
-            
-
         }
 
 
@@ -50,26 +50,19 @@ namespace QuanLyRapPhim
   
         private void ShowControl(System.Windows.Forms.Control control)
         {
-            // Xóa tất cả các control cũ khỏi form
             mainPanel.Controls.Clear();
-
-            // Thêm control mới vào form
+            //control.Dock = DockStyle.Fill;
             mainPanel.Controls.Add(control);
-            //this.Controls.Add(control);
+            
         }
 
         private void userBtn_Click(object sender, EventArgs e)
         {
-            
-            quanLyUserControl.Dock = DockStyle.Fill; // Dock control để lấp đầy form
             ShowControl(quanLyUserControl);
         }
 
         private void phimBtn_Click(object sender, EventArgs e)
         {
-            // Hiển thị control ThemPhimControl khi nhấp vào button
-            
-            quanLyPhimControl.Dock = DockStyle.Fill; // Dock control để lấp đầy form
             ShowControl(quanLyPhimControl);
         }
     }

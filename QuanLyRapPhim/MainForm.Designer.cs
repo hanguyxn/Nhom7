@@ -66,7 +66,7 @@
             this.userBtn.Name = "userBtn";
             this.userBtn.Size = new System.Drawing.Size(200, 67);
             this.userBtn.TabIndex = 3;
-            this.userBtn.Text = "   Quản lý user";
+            this.userBtn.Text = "   User";
             this.userBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.userBtn.UseVisualStyleBackColor = false;
             this.userBtn.Click += new System.EventHandler(this.userBtn_Click);
@@ -112,7 +112,7 @@
             this.phimBtn.Name = "phimBtn";
             this.phimBtn.Size = new System.Drawing.Size(200, 67);
             this.phimBtn.TabIndex = 2;
-            this.phimBtn.Text = "   Quản lý phim";
+            this.phimBtn.Text = "   Quản lý";
             this.phimBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.phimBtn.UseVisualStyleBackColor = false;
             this.phimBtn.Click += new System.EventHandler(this.phimBtn_Click);
@@ -140,6 +140,7 @@
             // 
             // mainPanel
             // 
+            this.mainPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.mainPanel.Location = new System.Drawing.Point(0, 67);
             this.mainPanel.Name = "mainPanel";
@@ -157,6 +158,7 @@
             this.Controls.Add(this.topPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản lý rạp phim";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseMainForm);
             this.Load += new System.EventHandler(this.MainForm_Load);

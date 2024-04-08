@@ -13,6 +13,7 @@ namespace QuanLyRapPhim
 {
     public partial class SuaPhimForm : Form
     {
+        public bool IsUpdated { get; private set; }
         private Database database = new Database();
         private string maPhim;
 
@@ -32,7 +33,24 @@ namespace QuanLyRapPhim
         private void SuaPhimForm_Load(object sender, EventArgs e)
         {
             // Gọi phương thức HienThiThongTinPhim từ lớp Database để hiển thị thông tin phim vào các TextBox
-            database.HienThiThongTinPhim(maPhim,maPhimTxt, tenPhimTxt, thoiLuongTxt, dateTimeKhoiChieu, dateTimeKetThuc, quocGiaTxt, daoDienTxt, dateTimeSanXuat, theLoaiComboBox);
+            database.HienThiThongTinPhim(maPhim,maPhimTxt, tenPhimTxt, thoiLuongTxt, dateTimeKhoiChieu, dateTimeKetThuc, quocGiaTxt, daoDienTxt, namSanXuatTextBox, theLoaiComboBox);
+            // Lấy danh sách các tên thể loại từ cơ sở dữ liệu
+            DataTable dtTheLoai = database.LayDanhSachTheLoai();
+
+            // Thêm một mục trống đầu tiên vào ComboBox để cho phép người dùng chọn
+            //theLoaiComboBox.Items.Add("Chọn thể loại");
+
+            // Vòng lặp qua từng thể loại và thêm chúng vào ComboBox
+            foreach (DataRow row in dtTheLoai.Rows)
+            {
+                string tenTheLoai = row["TenTheLoai"].ToString();
+
+                // Thêm tên thể loại vào ComboBox
+                theLoaiComboBox.Items.Add(tenTheLoai);
+            }
+
+            // Chọn mục đầu tiên trong ComboBox là mục trống
+            theLoaiComboBox.SelectedIndex = 0;
         }
 
         private void luuBtn_Click(object sender, EventArgs e)
@@ -43,7 +61,7 @@ namespace QuanLyRapPhim
             DateTime ngayKetThuc = Convert.ToDateTime(dateTimeKetThuc.Value);
             string quocGia = quocGiaTxt.Text;
             string daoDien = daoDienTxt.Text;
-            int namSanXuat = dateTimeSanXuat.Value.Year;
+            int namSanXuat = int.Parse(namSanXuatTextBox.Text);
 
             if (theLoaiComboBox.SelectedItem == null)
             {
@@ -60,13 +78,12 @@ namespace QuanLyRapPhim
                 // Kiểm tra kết quả và hiển thị thông báo tương ứng
                 if (result)
                 {
-                    MessageBox.Show("Sửa phim thành công");
-                    this.DialogResult = DialogResult.OK;
+                    IsUpdated = true;
                     this.Close(); // Đóng form sau khi sửa thành công
                 }
                 else
                 {
-                    MessageBox.Show("Sửa phim thất bại");
+                    IsUpdated = false;
                 }
             }
         }
