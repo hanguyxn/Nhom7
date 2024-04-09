@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace QuanLyRapPhim
 {
@@ -93,6 +94,39 @@ namespace QuanLyRapPhim
             }
             return dataTable;
         }
+        public DataTable LayDanhSachLichChieu()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM id";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+        public DataTable LayDanhSachPhongChieu()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM PhongChieu";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+
         public DataTable LayDanhSachUser()
         {
             DataTable dataTable = new DataTable();
@@ -303,6 +337,52 @@ namespace QuanLyRapPhim
             }
         }
 
+        public bool ThemPhongChieu(string maPhong, string tenPhong, int soLuongGhe, int soGheMoiHang, int tinhTrang)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO PhongChieu (MaPhong, TenPhong, SoLuongGhe, SoGheMoiHang, TinhTrang) VALUES (@MaPhong, @TenPhong, @SoLuongGhe, @SoGheMoiHang, @TinhTrang)";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@MaPhong", maPhong);
+                    command.Parameters.AddWithValue("@TenPhong", tenPhong);
+                    command.Parameters.AddWithValue("@SoLuongGhe", soLuongGhe);
+                    command.Parameters.AddWithValue("@SoGheMoiHang", soGheMoiHang);
+                    command.Parameters.AddWithValue("@TinhTrang", tinhTrang);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool XoaPhongChieu(string maPhong)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM PhongChieu WHERE MaPhong = @MaPhong";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@MaPhong", maPhong);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng được xóa
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+
         public bool ThemNhanVien(string username, string password, string hoTen, string diaChi, string sdt, string role)
         {
             try
@@ -374,5 +454,33 @@ namespace QuanLyRapPhim
                 return false;
             }
         }
+        //lịch chiếu
+        public bool ThemLichChieu(string id, DateTime thoigianchieu, string idphong, decimal giave, int trangthai)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO LichChieu (id, thoigianchieu, idphong, giave, trangthai) VALUES (@Id, @ThoiGianChieu, @IdPhong, @GiaVe, @TrangThai)";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.Parameters.AddWithValue("@ThoiGianChieu", thoigianchieu);
+                    command.Parameters.AddWithValue("@IdPhong", idphong);
+                    command.Parameters.AddWithValue("@GiaVe", giave);
+                    command.Parameters.AddWithValue("@TrangThai", trangthai);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        //////////////////het lich chieu
     }
 }

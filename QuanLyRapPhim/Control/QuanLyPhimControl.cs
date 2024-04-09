@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 
 namespace QuanLyRapPhim.Control
 {
@@ -31,25 +33,39 @@ namespace QuanLyRapPhim.Control
             // Load dữ liệu từ cơ sở dữ liệu vào DataGridView
             hienThiPhimGrid.DataSource = database.LayDanhSachPhim();
             theLoaiGrid.DataSource = database.LayDanhSachTheLoai();
+            
+            phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+            lichChieuGridView.DataSource = database.LayDanhSachLichChieu();
 
             // Lấy danh sách các tên thể loại từ cơ sở dữ liệu
             DataTable dtTheLoai = database.LayDanhSachTheLoai();
+            DataTable dtPhongChieu= database.LayDanhSachPhongChieu();
 
-            // Thêm một mục trống đầu tiên vào ComboBox để cho phép người dùng chọn
-            theLoaiComboBox.Items.Add("Chọn thể loại");
+            // Gọi hàm LoadComboBoxFromDataTable để nạp dữ liệu vào ComboBox
+            Func.LoadComboBoxFromDataTable(theLoaiComboBox, dtTheLoai, "Chọn thể loại", "TenTheLoai");
+            Func.LoadComboBoxFromDataTable(idPhongInLichChieu, dtPhongChieu, "Chọn phòng chiếu", "maphong");
 
-            // Vòng lặp qua từng thể loại và thêm chúng vào ComboBox
-            foreach (DataRow row in dtTheLoai.Rows)
-            {
-                string tenTheLoai = row["TenTheLoai"].ToString();
-
-                // Thêm tên thể loại vào ComboBox
-                theLoaiComboBox.Items.Add(tenTheLoai);
-            }
-
-            // Chọn mục đầu tiên trong ComboBox là mục trống
-            theLoaiComboBox.SelectedIndex = 0;
         }
+        
+        private void phongChieuGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Lấy chỉ số của dòng được chọn
+            int rowIndex = e.RowIndex;
+
+            if (rowIndex >= 0 && rowIndex < phongChieuGrid.Rows.Count)
+            {
+                // Lấy dữ liệu từ các ô của dòng được chọn
+                DataGridViewRow selectedRow = phongChieuGrid.Rows[rowIndex];
+
+                maPhongTextBox.Text = selectedRow.Cells["maphong"].Value.ToString();
+                tenPhongTextBox.Text = selectedRow.Cells["tenphong"].Value.ToString();
+                soLuongGheTextBox.Text = selectedRow.Cells["soluongghe"].Value.ToString();
+                soGheMoiHangTextBox.Text = selectedRow.Cells["soghemoihang"].Value.ToString();
+                tinhTrangGheTextBox.Text = selectedRow.Cells["tinhtrang"].Value.ToString();
+
+            }
+        }
+
         public bool checkValid()
         {
             if(
@@ -176,6 +192,61 @@ namespace QuanLyRapPhim.Control
             else
             {
                 MessageBox.Show("Vui lòng chọn dòng cần sửa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void themPhongBtn_Click(object sender, EventArgs e)
+        {
+            if(maPhongTextBox.Text.Length > 0 && tenPhongTextBox.Text.Length > 0 && soLuongGheTextBox.Text.Length > 0 && soGheMoiHangTextBox.Text.Length > 0 && tinhTrangGheTextBox.Text.Length > 0)
+            {
+                bool result = database.ThemPhongChieu(maPhongTextBox.Text, tenPhongTextBox.Text, int.Parse(soLuongGheTextBox.Text), int.Parse(soGheMoiHangTextBox.Text), int.Parse(tinhTrangGheTextBox.Text));
+                if(!result)
+                {
+                    MessageBox.Show("Thêm lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+            }
+        }
+
+        private void xoaPhongBtn_Click(object sender, EventArgs e)
+        {
+            if (phongChieuGrid.SelectedRows.Count > 0)
+            {
+                // Lấy hàng được chọn
+                DataGridViewRow selectedRow = phongChieuGrid.SelectedRows[0];
+                string maPhong = selectedRow.Cells["maphong"].Value.ToString();
+                bool result = database.XoaPhongChieu(maPhong);
+                if (!result)
+                {
+                    MessageBox.Show("Vui Lỗi xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần sửa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void themLichBtn_Click(object sender, EventArgs e)
+        {
+            if(maLichChieuTextBox.Text.Length > 0 && idPhongInLichChieu.SelectedItem != "" && int.Parse(giaVeTextBox.Text) > 0 && trangThaiTextBox.Text != "")
+            {
+
+                // Gọi hàm để thêm lịch chiếu và kiểm tra kết quả
+                bool result = database.ThemLichChieu(maLichChieuTextBox.Text, lichChieuPicker.Value, idPhongInLichChieu.Text, decimal.Parse(giaVeTextBox.Text), int.Parse(trangThaiTextBox.Text));
+                if (result)
+                {
+                    MessageBox.Show("Thêm lịch chiếu thành công!");
+                }
+                else
+                {
+                    MessageBox.Show("Thêm lịch chiếu thất bại!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

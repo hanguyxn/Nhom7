@@ -30,6 +30,7 @@
         {
             this.userControl = new System.Windows.Forms.TabControl();
             this.userTab = new System.Windows.Forms.TabPage();
+            this.xoaUserBtn = new System.Windows.Forms.Button();
             this.editUserBtn = new System.Windows.Forms.Button();
             this.addUserBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.username = new System.Windows.Forms.TextBox();
             this.userGrid = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.xoaUserBtn = new System.Windows.Forms.Button();
             this.userControl.SuspendLayout();
             this.userTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userGrid)).BeginInit();
@@ -59,7 +59,7 @@
             this.userControl.Location = new System.Drawing.Point(3, 3);
             this.userControl.Name = "userControl";
             this.userControl.SelectedIndex = 0;
-            this.userControl.Size = new System.Drawing.Size(1301, 538);
+            this.userControl.Size = new System.Drawing.Size(1321, 601);
             this.userControl.TabIndex = 1;
             // 
             // userTab
@@ -83,10 +83,20 @@
             this.userTab.Location = new System.Drawing.Point(4, 29);
             this.userTab.Name = "userTab";
             this.userTab.Padding = new System.Windows.Forms.Padding(3);
-            this.userTab.Size = new System.Drawing.Size(1293, 505);
+            this.userTab.Size = new System.Drawing.Size(1313, 568);
             this.userTab.TabIndex = 0;
             this.userTab.Text = "Quản lý user";
             this.userTab.UseVisualStyleBackColor = true;
+            // 
+            // xoaUserBtn
+            // 
+            this.xoaUserBtn.Location = new System.Drawing.Point(734, 339);
+            this.xoaUserBtn.Name = "xoaUserBtn";
+            this.xoaUserBtn.Size = new System.Drawing.Size(258, 51);
+            this.xoaUserBtn.TabIndex = 15;
+            this.xoaUserBtn.Text = "Xóa";
+            this.xoaUserBtn.UseVisualStyleBackColor = true;
+            this.xoaUserBtn.Click += new System.EventHandler(this.xoaUserBtn_Click);
             // 
             // editUserBtn
             // 
@@ -230,23 +240,13 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // xoaUserBtn
-            // 
-            this.xoaUserBtn.Location = new System.Drawing.Point(734, 339);
-            this.xoaUserBtn.Name = "xoaUserBtn";
-            this.xoaUserBtn.Size = new System.Drawing.Size(258, 51);
-            this.xoaUserBtn.TabIndex = 15;
-            this.xoaUserBtn.Text = "Xóa";
-            this.xoaUserBtn.UseVisualStyleBackColor = true;
-            this.xoaUserBtn.Click += new System.EventHandler(this.xoaUserBtn_Click);
-            // 
             // QuanLyUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.userControl);
             this.Name = "QuanLyUserControl";
-            this.Size = new System.Drawing.Size(1307, 544);
+            this.Size = new System.Drawing.Size(1280, 544);
             this.Load += new System.EventHandler(this.QuanLyUserControl_Load);
             this.userControl.ResumeLayout(false);
             this.userTab.ResumeLayout(false);

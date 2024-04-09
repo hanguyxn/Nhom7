@@ -60,7 +60,7 @@
             this.userBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
             this.userBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.userBtn.FlatAppearance.BorderSize = 0;
-            this.userBtn.Image = global::QuanLyRapPhim.Properties.Resources.icons8_user_20;
+            this.userBtn.Image = global::QuanLyRapPhim.Properties.Resources.icons8_user_20__1_;
             this.userBtn.Location = new System.Drawing.Point(882, 0);
             this.userBtn.Margin = new System.Windows.Forms.Padding(0);
             this.userBtn.Name = "userBtn";
@@ -76,13 +76,13 @@
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
             this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.Image = global::QuanLyRapPhim.Properties.Resources.icons8_film_20;
+            this.button2.Image = global::QuanLyRapPhim.Properties.Resources.icons8_ticket_20;
             this.button2.Location = new System.Drawing.Point(282, 0);
             this.button2.Margin = new System.Windows.Forms.Padding(0);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(200, 67);
             this.button2.TabIndex = 5;
-            this.button2.Text = "   Phim";
+            this.button2.Text = "   Bán vé";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button2.UseVisualStyleBackColor = false;
             // 
@@ -106,7 +106,7 @@
             this.phimBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
             this.phimBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.phimBtn.FlatAppearance.BorderSize = 0;
-            this.phimBtn.Image = global::QuanLyRapPhim.Properties.Resources.icons8_setting_20;
+            this.phimBtn.Image = global::QuanLyRapPhim.Properties.Resources.icons8_setting_20__1_;
             this.phimBtn.Location = new System.Drawing.Point(682, 0);
             this.phimBtn.Margin = new System.Windows.Forms.Padding(0);
             this.phimBtn.Name = "phimBtn";
