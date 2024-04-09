@@ -21,6 +21,37 @@ namespace QuanLyRapPhim.Control
         {
             InitializeComponent();
         }
+        private void loadFormFromDb()
+        {
+            // Kiểm tra kết nối đến cơ sở dữ liệu
+            if (!database.TestConnection())
+            {
+                MessageBox.Show("Không thể kết nối đến cơ sở dữ liệu!");
+                return;
+            }
+
+            // Lấy danh sách các tên thể loại từ cơ sở dữ liệu
+            DataTable dtTheLoai = database.LayDanhSachTheLoai();
+
+            DataTable dtDanhSachPhim = database.LayDanhSachPhim();
+            DataTable dtPhongChieu = database.LayDanhSachPhongChieu();
+            DataTable dtLichChieu = database.LayDanhSachLichChieu();
+
+            // Load dữ liệu từ cơ sở dữ liệu vào DataGridView
+            hienThiPhimGrid.DataSource = dtDanhSachPhim;
+            theLoaiGrid.DataSource = dtTheLoai;
+
+            phongChieuGrid.DataSource = dtPhongChieu;
+            lichChieuGridView.DataSource = dtLichChieu;
+
+
+            
+
+            // Gọi hàm LoadComboBoxFromDataTable để nạp dữ liệu vào ComboBox
+            Func.LoadComboBoxFromDataTable(theLoaiComboBox, dtTheLoai, "Chọn thể loại", "TenTheLoai");
+            Func.LoadComboBoxFromDataTable(idPhongInLichChieu, dtPhongChieu, "Chọn phòng chiếu", "maphong");
+
+        }
         private void QuanLyPhimControl_Load(object sender, EventArgs e)
         {
             // Kiểm tra kết nối đến cơ sở dữ liệu
@@ -30,20 +61,7 @@ namespace QuanLyRapPhim.Control
                 return;
             }
 
-            // Load dữ liệu từ cơ sở dữ liệu vào DataGridView
-            hienThiPhimGrid.DataSource = database.LayDanhSachPhim();
-            theLoaiGrid.DataSource = database.LayDanhSachTheLoai();
-            
-            phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
-            lichChieuGridView.DataSource = database.LayDanhSachLichChieu();
-
-            // Lấy danh sách các tên thể loại từ cơ sở dữ liệu
-            DataTable dtTheLoai = database.LayDanhSachTheLoai();
-            DataTable dtPhongChieu= database.LayDanhSachPhongChieu();
-
-            // Gọi hàm LoadComboBoxFromDataTable để nạp dữ liệu vào ComboBox
-            Func.LoadComboBoxFromDataTable(theLoaiComboBox, dtTheLoai, "Chọn thể loại", "TenTheLoai");
-            Func.LoadComboBoxFromDataTable(idPhongInLichChieu, dtPhongChieu, "Chọn phòng chiếu", "maphong");
+            loadFormFromDb();
 
         }
         
@@ -123,7 +141,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Mã thể loại đã tồn tại!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                theLoaiGrid.DataSource = database.LayDanhSachTheLoai();
+                loadFormFromDb();
             }
             else
             {
@@ -143,7 +161,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Xóa thành công!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                theLoaiGrid.DataSource = database.LayDanhSachTheLoai();
+                loadFormFromDb();
             }
             else
             {
@@ -163,7 +181,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Xóa phim lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                hienThiPhimGrid.DataSource = database.LayDanhSachPhim();
+                loadFormFromDb();
             }
             else
             {
@@ -185,8 +203,7 @@ namespace QuanLyRapPhim.Control
                 if (suaPhimForm.IsUpdated)
                 {
                     MessageBox.Show("Sửa phim thành công!");
-                    hienThiPhimGrid.DataSource = database.LayDanhSachPhim();
-                    // Thực hiện các hành động cần thiết sau khi sửa thành công
+                    loadFormFromDb();
                 }
             }
             else
@@ -204,7 +221,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Thêm lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+                loadFormFromDb();
             }
         }
 
@@ -220,7 +237,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Vui Lỗi xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+                loadFormFromDb();
             }
             else
             {
@@ -235,18 +252,47 @@ namespace QuanLyRapPhim.Control
 
                 // Gọi hàm để thêm lịch chiếu và kiểm tra kết quả
                 bool result = database.ThemLichChieu(maLichChieuTextBox.Text, lichChieuPicker.Value, idPhongInLichChieu.Text, decimal.Parse(giaVeTextBox.Text), int.Parse(trangThaiTextBox.Text));
-                if (result)
-                {
-                    MessageBox.Show("Thêm lịch chiếu thành công!");
-                }
-                else
+                if (!result)
                 {
                     MessageBox.Show("Thêm lịch chiếu thất bại!");
                 }
+                loadFormFromDb();
             }
             else
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void suaPhongBtn_Click(object sender, EventArgs e)
+        {
+            if (phongChieuGrid.SelectedRows.Count > 0)
+            {
+                // Thử sửa đổi thông tin của một phòng chiếu trong cơ sở dữ liệu
+                bool result = database.SuaPhongChieu(
+                    maPhongTextBox.Text,
+                    tenPhongTextBox.Text,
+                    int.Parse(soLuongGheTextBox.Text),
+                    int.Parse(soGheMoiHangTextBox.Text),
+                    int.Parse(tinhTrangGheTextBox.Text)
+                );
+
+                // Kiểm tra kết quả của việc sửa đổi phòng chiếu
+                if (!result)
+                {
+                    // Hiển thị thông báo lỗi nếu sửa đổi không thành công
+                    MessageBox.Show("Sửa lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    // Nếu sửa đổi thành công, cập nhật lưới dữ liệu với danh sách phòng chiếu mới
+                    phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
+                }
+                loadFormFromDb();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần sửa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

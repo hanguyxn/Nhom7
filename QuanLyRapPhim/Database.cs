@@ -99,7 +99,7 @@ namespace QuanLyRapPhim
             DataTable dataTable = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM id";
+                string query = "SELECT * FROM lichchieu";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
@@ -351,6 +351,30 @@ namespace QuanLyRapPhim
                     command.Parameters.AddWithValue("@SoLuongGhe", soLuongGhe);
                     command.Parameters.AddWithValue("@SoGheMoiHang", soGheMoiHang);
                     command.Parameters.AddWithValue("@TinhTrang", tinhTrang);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+        public bool SuaPhongChieu(string maPhong, string tenPhong, int soLuongGhe, int soGheMoiHang, int tinhTrang)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE PhongChieu SET TenPhong = @TenPhong, SoLuongGhe = @SoLuongGhe, SoGheMoiHang = @SoGheMoiHang, TinhTrang = @TinhTrang WHERE MaPhong = @MaPhong";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@TenPhong", tenPhong);
+                    command.Parameters.AddWithValue("@SoLuongGhe", soLuongGhe);
+                    command.Parameters.AddWithValue("@SoGheMoiHang", soGheMoiHang);
+                    command.Parameters.AddWithValue("@TinhTrang", tinhTrang);
+                    command.Parameters.AddWithValue("@MaPhong", maPhong);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }

@@ -514,6 +514,7 @@
             this.suaPhongBtn.TabIndex = 12;
             this.suaPhongBtn.Text = "Sửa phòng";
             this.suaPhongBtn.UseVisualStyleBackColor = true;
+            this.suaPhongBtn.Click += new System.EventHandler(this.suaPhongBtn_Click);
             // 
             // themPhongBtn
             // 
