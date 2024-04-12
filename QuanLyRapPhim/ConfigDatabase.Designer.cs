@@ -31,10 +31,10 @@
             this.dataSourceTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.checkConnectBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.initialCatalogTextBox = new System.Windows.Forms.TextBox();
-            this.checkConnectBtn = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,14 +69,15 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
-            // label2
+            // checkConnectBtn
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Data Source";
+            this.checkConnectBtn.Location = new System.Drawing.Point(69, 148);
+            this.checkConnectBtn.Name = "checkConnectBtn";
+            this.checkConnectBtn.Size = new System.Drawing.Size(292, 37);
+            this.checkConnectBtn.TabIndex = 4;
+            this.checkConnectBtn.Text = "Kết nối database";
+            this.checkConnectBtn.UseVisualStyleBackColor = true;
+            this.checkConnectBtn.Click += new System.EventHandler(this.checkConnectBtn_Click);
             // 
             // label3
             // 
@@ -94,15 +95,14 @@
             this.initialCatalogTextBox.Size = new System.Drawing.Size(212, 26);
             this.initialCatalogTextBox.TabIndex = 2;
             // 
-            // checkConnectBtn
+            // label2
             // 
-            this.checkConnectBtn.Location = new System.Drawing.Point(69, 148);
-            this.checkConnectBtn.Name = "checkConnectBtn";
-            this.checkConnectBtn.Size = new System.Drawing.Size(292, 37);
-            this.checkConnectBtn.TabIndex = 4;
-            this.checkConnectBtn.Text = "Kiểm tra kết nối";
-            this.checkConnectBtn.UseVisualStyleBackColor = true;
-            this.checkConnectBtn.Click += new System.EventHandler(this.checkConnectBtn_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(39, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(99, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Data Source";
             // 
             // ConfigDatabase
             // 

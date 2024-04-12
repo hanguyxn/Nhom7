@@ -16,7 +16,7 @@ namespace QuanLyRapPhim
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginFom());
+            Application.Run(new LoginForm());
         }
     }
 }

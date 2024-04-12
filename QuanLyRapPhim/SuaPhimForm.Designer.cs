@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SuaPhimForm));
             this.label3 = new System.Windows.Forms.Label();
             this.dateTimeKetThuc = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
@@ -228,6 +229,7 @@
             this.Controls.Add(this.thoiLuongTxt);
             this.Controls.Add(this.tenPhimLabel);
             this.Controls.Add(this.tenPhimTxt);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SuaPhimForm";
             this.Text = "SuaPhimForm";
             this.Load += new System.EventHandler(this.SuaPhimForm_Load);

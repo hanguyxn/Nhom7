@@ -109,5 +109,14 @@ namespace QuanLyRapPhim.Control
                 MessageBox.Show("Vui lòng chọn dòng để xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = textBox1.Text;
+            DataTable filteredData = Func.SearchAndUpdateDataGridView(userGrid, database.LayDanhSachUser(), keyword);
+
+            // Cập nhật DataGridView với dữ liệu đã lọc
+            userGrid.DataSource = filteredData;
+        }
     }
 }

@@ -63,6 +63,26 @@ namespace QuanLyRapPhim.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cinema {
+            get {
+                object obj = ResourceManager.GetObject("cinema", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_cash_20 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-cash-20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_dataebase_20 {
             get {
                 object obj = ResourceManager.GetObject("icons8-dataebase-20", resourceCulture);
@@ -96,6 +116,16 @@ namespace QuanLyRapPhim.Properties {
         internal static System.Drawing.Bitmap icons8_home_20 {
             get {
                 object obj = ResourceManager.GetObject("icons8-home-20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_logout_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-logout-48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +176,26 @@ namespace QuanLyRapPhim.Properties {
         internal static System.Drawing.Bitmap icons8_user_20__1_ {
             get {
                 object obj = ResourceManager.GetObject("icons8-user-20 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap load {
+            get {
+                object obj = ResourceManager.GetObject("load", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loading {
+            get {
+                object obj = ResourceManager.GetObject("loading", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

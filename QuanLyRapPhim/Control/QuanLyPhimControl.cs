@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,7 @@ namespace QuanLyRapPhim.Control
         {
             InitializeComponent();
         }
-        private void loadFormFromDb()
+        private void loadFormFromDataBase()
         {
             // Kiểm tra kết nối đến cơ sở dữ liệu
             if (!database.TestConnection())
@@ -36,13 +37,14 @@ namespace QuanLyRapPhim.Control
             DataTable dtDanhSachPhim = database.LayDanhSachPhim();
             DataTable dtPhongChieu = database.LayDanhSachPhongChieu();
             DataTable dtLichChieu = database.LayDanhSachLichChieu();
-
+            DataTable dtVe = database.LayDanhSach("SELECT * FROM ve");
             // Load dữ liệu từ cơ sở dữ liệu vào DataGridView
             hienThiPhimGrid.DataSource = dtDanhSachPhim;
             theLoaiGrid.DataSource = dtTheLoai;
 
             phongChieuGrid.DataSource = dtPhongChieu;
             lichChieuGridView.DataSource = dtLichChieu;
+            veGridView.DataSource = dtVe;
 
 
             
@@ -50,6 +52,7 @@ namespace QuanLyRapPhim.Control
             // Gọi hàm LoadComboBoxFromDataTable để nạp dữ liệu vào ComboBox
             Func.LoadComboBoxFromDataTable(theLoaiComboBox, dtTheLoai, "Chọn thể loại", "TenTheLoai");
             Func.LoadComboBoxFromDataTable(idPhongInLichChieu, dtPhongChieu, "Chọn phòng chiếu", "maphong");
+            Func.LoadComboBoxFromDataTable(chonPhimInLichChieuComboBox, dtDanhSachPhim, "Chọn phim", "tenphim");
 
         }
         private void QuanLyPhimControl_Load(object sender, EventArgs e)
@@ -61,7 +64,7 @@ namespace QuanLyRapPhim.Control
                 return;
             }
 
-            loadFormFromDb();
+            loadFormFromDataBase();
 
         }
         
@@ -141,7 +144,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Mã thể loại đã tồn tại!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
@@ -161,7 +164,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Xóa thành công!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
@@ -181,7 +184,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Xóa phim lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
@@ -203,7 +206,7 @@ namespace QuanLyRapPhim.Control
                 if (suaPhimForm.IsUpdated)
                 {
                     MessageBox.Show("Sửa phim thành công!");
-                    loadFormFromDb();
+                    loadFormFromDataBase();
                 }
             }
             else
@@ -221,7 +224,11 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Thêm lỗi!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -237,7 +244,7 @@ namespace QuanLyRapPhim.Control
                 {
                     MessageBox.Show("Vui Lỗi xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
@@ -251,12 +258,12 @@ namespace QuanLyRapPhim.Control
             {
 
                 // Gọi hàm để thêm lịch chiếu và kiểm tra kết quả
-                bool result = database.ThemLichChieu(maLichChieuTextBox.Text, lichChieuPicker.Value, idPhongInLichChieu.Text, decimal.Parse(giaVeTextBox.Text), int.Parse(trangThaiTextBox.Text));
+                bool result = database.ThemLichChieu(maLichChieuTextBox.Text, lichChieuPicker.Value, idPhongInLichChieu.Text, chonPhimInLichChieuComboBox.Text, decimal.Parse(giaVeTextBox.Text), int.Parse(trangThaiTextBox.Text));
                 if (!result)
                 {
                     MessageBox.Show("Thêm lịch chiếu thất bại!");
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
@@ -288,12 +295,73 @@ namespace QuanLyRapPhim.Control
                     // Nếu sửa đổi thành công, cập nhật lưới dữ liệu với danh sách phòng chiếu mới
                     phongChieuGrid.DataSource = database.LayDanhSachPhongChieu();
                 }
-                loadFormFromDb();
+                loadFormFromDataBase();
             }
             else
             {
                 MessageBox.Show("Vui lòng chọn dòng cần sửa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void loadFormFromDb(object sender, EventArgs e)
+        {
+            loadFormFromDataBase();
+        }
+
+        private void xoaVeBtn_Click(object sender, EventArgs e)
+        {
+            if (veGridView.SelectedRows.Count > 0)
+            {
+
+                // Lấy hàng được chọn
+                DataGridViewRow selectedRow = veGridView.SelectedRows[0];
+                string value = selectedRow.Cells["mave"].Value.ToString();
+                bool result = database.Xoa("Ve","MaVe", value);
+                if (!result)
+                {
+                    MessageBox.Show("Lỗi xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                loadFormFromDataBase();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void xoaLichBtn_Click(object sender, EventArgs e)
+        {
+            if (lichChieuGridView.SelectedRows.Count > 0)
+            {
+
+                // Lấy hàng được chọn
+                DataGridViewRow selectedRow = lichChieuGridView.SelectedRows[0];
+                string value = selectedRow.Cells["id"].Value.ToString();
+                bool result = database.Xoa("LichChieu", "id", value);
+                if (!result)
+                {
+                    MessageBox.Show("Lỗi xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                loadFormFromDataBase();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần xóa!", "HA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = textBox1.Text;
+            DataTable filteredData = Func.SearchAndUpdateDataGridView(veGridView, database.LayDanhSach("SELECT * FROM ve"), keyword);
+
+            // Cập nhật DataGridView với dữ liệu đã lọc
+            veGridView.DataSource = filteredData;
+        }
+
+        private void loadFormFromDataBase(object sender, EventArgs e)
+        {
+            loadFormFromDataBase();
         }
     }
 }

@@ -82,6 +82,14 @@
             this.maPhongTextBox = new System.Windows.Forms.TextBox();
             this.phongChieuGrid = new System.Windows.Forms.DataGridView();
             this.lichChieuPage = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.chonPhimInLichChieuComboBox = new System.Windows.Forms.ComboBox();
+            this.idPhongInLichChieu = new System.Windows.Forms.ComboBox();
+            this.lichChieuPicker = new System.Windows.Forms.DateTimePicker();
+            this.xoaLichBtn = new System.Windows.Forms.Button();
+            this.suaLichBtn = new System.Windows.Forms.Button();
+            this.themLichBtn = new System.Windows.Forms.Button();
+            this.lichChieuGridView = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -90,12 +98,10 @@
             this.trangThaiTextBox = new System.Windows.Forms.TextBox();
             this.giaVeTextBox = new System.Windows.Forms.TextBox();
             this.maLichChieuTextBox = new System.Windows.Forms.TextBox();
-            this.lichChieuGridView = new System.Windows.Forms.DataGridView();
-            this.xoaLichBtn = new System.Windows.Forms.Button();
-            this.suaLichBtn = new System.Windows.Forms.Button();
-            this.themLichBtn = new System.Windows.Forms.Button();
-            this.lichChieuPicker = new System.Windows.Forms.DateTimePicker();
-            this.idPhongInLichChieu = new System.Windows.Forms.ComboBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.xoaVeBtn = new System.Windows.Forms.Button();
+            this.veGridView = new System.Windows.Forms.DataGridView();
             this.lichChieuControl.SuspendLayout();
             this.phimTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hienThiPhimGrid)).BeginInit();
@@ -105,22 +111,26 @@
             ((System.ComponentModel.ISupportInitialize)(this.phongChieuGrid)).BeginInit();
             this.lichChieuPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lichChieuGridView)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.veGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // lichChieuControl
             // 
-            this.lichChieuControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lichChieuControl.Controls.Add(this.phimTab);
             this.lichChieuControl.Controls.Add(this.danhMucPage);
             this.lichChieuControl.Controls.Add(this.phongChieuPage);
             this.lichChieuControl.Controls.Add(this.lichChieuPage);
+            this.lichChieuControl.Controls.Add(this.tabPage1);
             this.lichChieuControl.Location = new System.Drawing.Point(3, 3);
             this.lichChieuControl.Name = "lichChieuControl";
             this.lichChieuControl.SelectedIndex = 0;
             this.lichChieuControl.Size = new System.Drawing.Size(1276, 538);
             this.lichChieuControl.TabIndex = 0;
+            this.lichChieuControl.SelectedIndexChanged += new System.EventHandler(this.loadFormFromDb);
+            this.lichChieuControl.TabIndexChanged += new System.EventHandler(this.loadFormFromDb);
+            this.lichChieuControl.VisibleChanged += new System.EventHandler(this.loadFormFromDb);
+            this.lichChieuControl.Enter += new System.EventHandler(this.loadFormFromDataBase);
             // 
             // phimTab
             // 
@@ -619,6 +629,8 @@
             // 
             // lichChieuPage
             // 
+            this.lichChieuPage.Controls.Add(this.label24);
+            this.lichChieuPage.Controls.Add(this.chonPhimInLichChieuComboBox);
             this.lichChieuPage.Controls.Add(this.idPhongInLichChieu);
             this.lichChieuPage.Controls.Add(this.lichChieuPicker);
             this.lichChieuPage.Controls.Add(this.xoaLichBtn);
@@ -641,10 +653,81 @@
             this.lichChieuPage.Text = "Lịch chiếu";
             this.lichChieuPage.UseVisualStyleBackColor = true;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(16, 171);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(48, 20);
+            this.label24.TabIndex = 28;
+            this.label24.Text = "Phim:";
+            // 
+            // chonPhimInLichChieuComboBox
+            // 
+            this.chonPhimInLichChieuComboBox.FormattingEnabled = true;
+            this.chonPhimInLichChieuComboBox.Location = new System.Drawing.Point(181, 171);
+            this.chonPhimInLichChieuComboBox.Name = "chonPhimInLichChieuComboBox";
+            this.chonPhimInLichChieuComboBox.Size = new System.Drawing.Size(254, 28);
+            this.chonPhimInLichChieuComboBox.TabIndex = 27;
+            // 
+            // idPhongInLichChieu
+            // 
+            this.idPhongInLichChieu.FormattingEnabled = true;
+            this.idPhongInLichChieu.Location = new System.Drawing.Point(181, 126);
+            this.idPhongInLichChieu.Name = "idPhongInLichChieu";
+            this.idPhongInLichChieu.Size = new System.Drawing.Size(254, 28);
+            this.idPhongInLichChieu.TabIndex = 26;
+            // 
+            // lichChieuPicker
+            // 
+            this.lichChieuPicker.Location = new System.Drawing.Point(181, 77);
+            this.lichChieuPicker.Name = "lichChieuPicker";
+            this.lichChieuPicker.Size = new System.Drawing.Size(254, 26);
+            this.lichChieuPicker.TabIndex = 25;
+            // 
+            // xoaLichBtn
+            // 
+            this.xoaLichBtn.Location = new System.Drawing.Point(792, 398);
+            this.xoaLichBtn.Name = "xoaLichBtn";
+            this.xoaLichBtn.Size = new System.Drawing.Size(249, 55);
+            this.xoaLichBtn.TabIndex = 24;
+            this.xoaLichBtn.Text = "Xóa lịch";
+            this.xoaLichBtn.UseVisualStyleBackColor = true;
+            this.xoaLichBtn.Click += new System.EventHandler(this.xoaLichBtn_Click);
+            // 
+            // suaLichBtn
+            // 
+            this.suaLichBtn.Location = new System.Drawing.Point(475, 398);
+            this.suaLichBtn.Name = "suaLichBtn";
+            this.suaLichBtn.Size = new System.Drawing.Size(249, 55);
+            this.suaLichBtn.TabIndex = 23;
+            this.suaLichBtn.Text = "Sửa lịch";
+            this.suaLichBtn.UseVisualStyleBackColor = true;
+            // 
+            // themLichBtn
+            // 
+            this.themLichBtn.Location = new System.Drawing.Point(162, 398);
+            this.themLichBtn.Name = "themLichBtn";
+            this.themLichBtn.Size = new System.Drawing.Size(249, 55);
+            this.themLichBtn.TabIndex = 22;
+            this.themLichBtn.Text = "Thêm lịch";
+            this.themLichBtn.UseVisualStyleBackColor = true;
+            this.themLichBtn.Click += new System.EventHandler(this.themLichBtn_Click);
+            // 
+            // lichChieuGridView
+            // 
+            this.lichChieuGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.lichChieuGridView.Location = new System.Drawing.Point(489, 27);
+            this.lichChieuGridView.Name = "lichChieuGridView";
+            this.lichChieuGridView.RowHeadersWidth = 62;
+            this.lichChieuGridView.RowTemplate.Height = 28;
+            this.lichChieuGridView.Size = new System.Drawing.Size(746, 327);
+            this.lichChieuGridView.TabIndex = 21;
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(16, 238);
+            this.label19.Location = new System.Drawing.Point(16, 266);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(84, 20);
             this.label19.TabIndex = 20;
@@ -653,7 +736,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(16, 179);
+            this.label20.Location = new System.Drawing.Point(16, 223);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(58, 20);
             this.label20.TabIndex = 19;
@@ -664,9 +747,9 @@
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(16, 126);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(76, 20);
+            this.label21.Size = new System.Drawing.Size(101, 20);
             this.label21.TabIndex = 18;
-            this.label21.Text = "Id phòng:";
+            this.label21.Text = "Phòng chiếu:";
             // 
             // label22
             // 
@@ -688,14 +771,14 @@
             // 
             // trangThaiTextBox
             // 
-            this.trangThaiTextBox.Location = new System.Drawing.Point(181, 232);
+            this.trangThaiTextBox.Location = new System.Drawing.Point(181, 263);
             this.trangThaiTextBox.Name = "trangThaiTextBox";
             this.trangThaiTextBox.Size = new System.Drawing.Size(254, 26);
             this.trangThaiTextBox.TabIndex = 15;
             // 
             // giaVeTextBox
             // 
-            this.giaVeTextBox.Location = new System.Drawing.Point(181, 179);
+            this.giaVeTextBox.Location = new System.Drawing.Point(181, 217);
             this.giaVeTextBox.Name = "giaVeTextBox";
             this.giaVeTextBox.Size = new System.Drawing.Size(254, 26);
             this.giaVeTextBox.TabIndex = 14;
@@ -707,58 +790,46 @@
             this.maLichChieuTextBox.Size = new System.Drawing.Size(254, 26);
             this.maLichChieuTextBox.TabIndex = 11;
             // 
-            // lichChieuGridView
+            // tabPage1
             // 
-            this.lichChieuGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.lichChieuGridView.Location = new System.Drawing.Point(489, 27);
-            this.lichChieuGridView.Name = "lichChieuGridView";
-            this.lichChieuGridView.RowHeadersWidth = 62;
-            this.lichChieuGridView.RowTemplate.Height = 28;
-            this.lichChieuGridView.Size = new System.Drawing.Size(746, 327);
-            this.lichChieuGridView.TabIndex = 21;
+            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.xoaVeBtn);
+            this.tabPage1.Controls.Add(this.veGridView);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1268, 505);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "Vé";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // xoaLichBtn
+            // textBox1
             // 
-            this.xoaLichBtn.Location = new System.Drawing.Point(792, 398);
-            this.xoaLichBtn.Name = "xoaLichBtn";
-            this.xoaLichBtn.Size = new System.Drawing.Size(249, 55);
-            this.xoaLichBtn.TabIndex = 24;
-            this.xoaLichBtn.Text = "Xóa lịch";
-            this.xoaLichBtn.UseVisualStyleBackColor = true;
+            this.textBox1.Location = new System.Drawing.Point(993, 23);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(269, 26);
+            this.textBox1.TabIndex = 26;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // suaLichBtn
+            // xoaVeBtn
             // 
-            this.suaLichBtn.Location = new System.Drawing.Point(475, 398);
-            this.suaLichBtn.Name = "suaLichBtn";
-            this.suaLichBtn.Size = new System.Drawing.Size(249, 55);
-            this.suaLichBtn.TabIndex = 23;
-            this.suaLichBtn.Text = "Sửa lịch";
-            this.suaLichBtn.UseVisualStyleBackColor = true;
+            this.xoaVeBtn.Location = new System.Drawing.Point(528, 413);
+            this.xoaVeBtn.Name = "xoaVeBtn";
+            this.xoaVeBtn.Size = new System.Drawing.Size(249, 55);
+            this.xoaVeBtn.TabIndex = 25;
+            this.xoaVeBtn.Text = "Xóa vé";
+            this.xoaVeBtn.UseVisualStyleBackColor = true;
+            this.xoaVeBtn.Click += new System.EventHandler(this.xoaVeBtn_Click);
             // 
-            // themLichBtn
+            // veGridView
             // 
-            this.themLichBtn.Location = new System.Drawing.Point(162, 398);
-            this.themLichBtn.Name = "themLichBtn";
-            this.themLichBtn.Size = new System.Drawing.Size(249, 55);
-            this.themLichBtn.TabIndex = 22;
-            this.themLichBtn.Text = "Thêm lịch";
-            this.themLichBtn.UseVisualStyleBackColor = true;
-            this.themLichBtn.Click += new System.EventHandler(this.themLichBtn_Click);
-            // 
-            // lichChieuPicker
-            // 
-            this.lichChieuPicker.Location = new System.Drawing.Point(181, 77);
-            this.lichChieuPicker.Name = "lichChieuPicker";
-            this.lichChieuPicker.Size = new System.Drawing.Size(254, 26);
-            this.lichChieuPicker.TabIndex = 25;
-            // 
-            // idPhongInLichChieu
-            // 
-            this.idPhongInLichChieu.FormattingEnabled = true;
-            this.idPhongInLichChieu.Location = new System.Drawing.Point(181, 126);
-            this.idPhongInLichChieu.Name = "idPhongInLichChieu";
-            this.idPhongInLichChieu.Size = new System.Drawing.Size(254, 28);
-            this.idPhongInLichChieu.TabIndex = 26;
+            this.veGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.veGridView.Location = new System.Drawing.Point(392, 55);
+            this.veGridView.Name = "veGridView";
+            this.veGridView.RowHeadersWidth = 62;
+            this.veGridView.RowTemplate.Height = 28;
+            this.veGridView.Size = new System.Drawing.Size(870, 327);
+            this.veGridView.TabIndex = 22;
             // 
             // QuanLyPhimControl
             // 
@@ -769,7 +840,7 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.lichChieuControl);
             this.Name = "QuanLyPhimControl";
-            this.Size = new System.Drawing.Size(1307, 544);
+            this.Size = new System.Drawing.Size(1282, 544);
             this.Load += new System.EventHandler(this.QuanLyPhimControl_Load);
             this.lichChieuControl.ResumeLayout(false);
             this.phimTab.ResumeLayout(false);
@@ -784,6 +855,9 @@
             this.lichChieuPage.ResumeLayout(false);
             this.lichChieuPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lichChieuGridView)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.veGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -858,5 +932,11 @@
         private System.Windows.Forms.Button themLichBtn;
         private System.Windows.Forms.DateTimePicker lichChieuPicker;
         private System.Windows.Forms.ComboBox idPhongInLichChieu;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.ComboBox chonPhimInLichChieuComboBox;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView veGridView;
+        private System.Windows.Forms.Button xoaVeBtn;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

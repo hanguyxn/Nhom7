@@ -32,7 +32,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cinema.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PdfSharp, Version=1.32.2602.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.2602.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.2602.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.2602.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +53,12 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigDatabase.cs">
@@ -51,6 +66,12 @@
     </Compile>
     <Compile Include="ConfigDatabase.Designer.cs">
       <DependentUpon>ConfigDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\BanVeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\BanVeControl.Designer.cs">
+      <DependentUpon>BanVeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\QuanLyPhimControl.cs">
       <SubType>UserControl</SubType>
@@ -65,6 +86,12 @@
       <DependentUpon>QuanLyUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Database.cs" />
+    <Compile Include="FormThanhToan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormThanhToan.Designer.cs">
+      <DependentUpon>FormThanhToan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Func.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -89,11 +116,17 @@
     <EmbeddedResource Include="ConfigDatabase.resx">
       <DependentUpon>ConfigDatabase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Control\BanVeControl.resx">
+      <DependentUpon>BanVeControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Control\QuanLyPhimControl.resx">
       <DependentUpon>QuanLyPhimControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\QuanLyUserControl.resx">
       <DependentUpon>QuanLyUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormThanhToan.resx">
+      <DependentUpon>FormThanhToan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -114,6 +147,7 @@
     <EmbeddedResource Include="SuaPhimForm.resx">
       <DependentUpon>SuaPhimForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -153,6 +187,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-user-20 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-cash-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\load.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cinema.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cinema.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Drawing;
+using System.Collections;
 
 namespace QuanLyRapPhim
 {
@@ -42,13 +44,29 @@ namespace QuanLyRapPhim
     }
     public class Database
     {
-        ConfigDatabase db;
 
         // Chuỗi kết nối
-        private string connectionString = @"Data Source=DESKTOP-03VO761\;Initial Catalog=cinema;Integrated Security=True";
         public bool TestConnection()
         {
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString);
+            try
+            {
+                connection.Open();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public bool TestConnection(string dataSource, string initialCatalog)
+        {
+           
+            SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString);
             try
             {
                 connection.Open();
@@ -67,9 +85,26 @@ namespace QuanLyRapPhim
         public DataTable LayDanhSachPhim()
         {
             DataTable dataTable = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT maphim, tenphim, mota, thoiluong, ngaykhoichieu, ngayketthuc, quocgia, daodien, namsanxuat, theloai, banner FROM phim";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+
+        public DataTable LayDanhSach(string query)
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
@@ -82,7 +117,7 @@ namespace QuanLyRapPhim
         public DataTable LayDanhSachTheLoai()
         {
             DataTable dataTable = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT * FROM TheLoai";
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -97,7 +132,7 @@ namespace QuanLyRapPhim
         public DataTable LayDanhSachLichChieu()
         {
             DataTable dataTable = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT * FROM lichchieu";
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -113,7 +148,7 @@ namespace QuanLyRapPhim
         public DataTable LayDanhSachPhongChieu()
         {
             DataTable dataTable = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT * FROM PhongChieu";
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -130,7 +165,7 @@ namespace QuanLyRapPhim
         public DataTable LayDanhSachUser()
         {
             DataTable dataTable = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT * FROM Users";
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -142,11 +177,187 @@ namespace QuanLyRapPhim
             }
             return dataTable;
         }
+        public string LayMaPhongTuThoiGianChieu(string thoigianchieu)
+        {
+            string maPhong = "";
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                string query = "SELECT maphong FROM lichchieu WHERE thoigianchien = @ThoiGianChieu";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ThoiGianChieu", thoigianchieu);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        maPhong = result.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Lỗi: " + ex.Message);
+                }
+            }
+            return maPhong;
+        }
+        public string LayMaPhongTuMaLichChieu(string maLichChieu)
+        {
+            string maPhong = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT idphong FROM LichChieu WHERE id = @MaLichChieu";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@MaLichChieu", maLichChieu);
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        maPhong = result.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            return maPhong;
+        }
+        public string LayTenPhimTuMaLichChieu(string maLichChieu)
+        {
+            string tenPhim = string.Empty;
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                string query = "SELECT TenPhim FROM Phim WHERE MaPhim IN (SELECT MaPhim FROM LichChieu WHERE id = @MaLichChieu)";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@MaLichChieu", maLichChieu);
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        tenPhim = result.ToString();
+                    }
+                }
+            }
+            return tenPhim;
+        }
+        public decimal LayGiaVeTuIdLichChieu(string idLichChieu)
+        {
+            decimal giaVe = 0;
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                string query = "SELECT GiaVe FROM LichChieu WHERE id = @IdLichChieu";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@IdLichChieu", idLichChieu);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        giaVe = Convert.ToDecimal(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    // Xử lý ngoại lệ nếu cần thiết
+                }
+            }
+            return giaVe;
+        }
+        public int LaySoLuongGheTuMaPhong(string maPhong)
+        {
+            int soLuongGhe = 0;
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                string query = "SELECT soluongghe FROM phongchieu WHERE maphong = @MaPhong";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MaPhong", maPhong);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        soLuongGhe = Convert.ToInt32(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Lỗi: " + ex.Message);
+                }
+            }
+            return soLuongGhe;
+        }
+        public string GetUserRoleFromDatabase(string username)
+        {
+            string userRole = ""; // Vai trò của người dùng
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    string query = "SELECT Role FROM Users WHERE Username = @Username";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", username);
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                userRole = reader["Role"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return userRole;
+        }
+
+
+        public int LaySoLuongGheMoiHang(string maPhong)
+        {
+            int soLuongGhe = 0;
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                string query = "SELECT soghemoihang FROM phongchieu WHERE maphong = @MaPhong";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MaPhong", maPhong);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        soLuongGhe = Convert.ToInt32(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Lỗi: " + ex.Message);
+                }
+            }
+            return soLuongGhe;
+        }
         public bool XoaTheLoai(string maTheLoai)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "DELETE FROM TheLoai WHERE MaTheLoai = @MaTheLoai";
@@ -165,7 +376,7 @@ namespace QuanLyRapPhim
         public bool Login(string username, string password)
         {
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = $"SELECT COUNT(*) FROM Users WHERE Username = '{username}' AND Password = '{password}'";
 
@@ -188,7 +399,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "INSERT INTO phim (maphim, tenphim, mota, thoiluong, ngaykhoichieu, ngayketthuc, quocgia, daodien, namsanxuat, theloai, banner) VALUES (@MaPhim, @TenPhim, @MoTa, @ThoiLuong, @NgayKhoiChieu, @NgayKetThuc, @QuocGia, @DaoDien, @NamSanXuat, @TheLoai, @Banner)";
@@ -219,7 +430,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
 
@@ -265,7 +476,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "DELETE FROM Phim WHERE MaPhim = @MaPhim";
@@ -285,7 +496,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "INSERT INTO TheLoai (MaTheLoai, TenTheLoai, MoTa) VALUES (@MaTheLoai, @TenTheLoai, @MoTa)";
@@ -305,7 +516,7 @@ namespace QuanLyRapPhim
         }
         public void HienThiThongTinPhim(string maPhim,TextBox maPhimTxt, TextBox tenPhimTxt, TextBox thoiLuongTxt, DateTimePicker ngayKhoiChieuDateTimePicker, DateTimePicker ngayKetThucDateTimePicker, TextBox quocGiaTxt, TextBox daoDienTxt, TextBox namSanXuatTextBox, ComboBox theLoaiComboBox)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
             {
                 string query = "SELECT * FROM phim WHERE MaPhim = @MaPhim";
 
@@ -341,7 +552,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "INSERT INTO PhongChieu (MaPhong, TenPhong, SoLuongGhe, SoGheMoiHang, TinhTrang) VALUES (@MaPhong, @TenPhong, @SoLuongGhe, @SoGheMoiHang, @TinhTrang)";
@@ -365,7 +576,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "UPDATE PhongChieu SET TenPhong = @TenPhong, SoLuongGhe = @SoLuongGhe, SoGheMoiHang = @SoGheMoiHang, TinhTrang = @TinhTrang WHERE MaPhong = @MaPhong";
@@ -390,7 +601,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "DELETE FROM PhongChieu WHERE MaPhong = @MaPhong";
@@ -411,7 +622,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "INSERT INTO Users (Username, Password, HoTen, DiaChi, SDT, Role) VALUES (@Username, @Password, @HoTen, @DiaChi, @SDT, @Role)";
@@ -436,7 +647,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "UPDATE Users SET Password = @Password, HoTen = @HoTen, DiaChi = @DiaChi, SDT = @SDT, Role = @Role WHERE Username = @Username";
@@ -462,7 +673,7 @@ namespace QuanLyRapPhim
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
                     string query = "DELETE FROM Users WHERE Username = @Username";
@@ -478,19 +689,41 @@ namespace QuanLyRapPhim
                 return false;
             }
         }
-        //lịch chiếu
-        public bool ThemLichChieu(string id, DateTime thoigianchieu, string idphong, decimal giave, int trangthai)
+
+        public bool Xoa(string table, string cell, string value)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO LichChieu (id, thoigianchieu, idphong, giave, trangthai) VALUES (@Id, @ThoiGianChieu, @IdPhong, @GiaVe, @TrangThai)";
+                    string query = "DELETE FROM "+ table + " WHERE "+ cell + " = @"+ cell;
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@"+ cell, value);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng được xóa
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+        //lịch chiếu
+        public bool ThemLichChieu(string id, DateTime thoigianchieu, string idphong,string phim, decimal giave, int trangthai)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO LichChieu (id, thoigianchieu, idphong, phim, giave, trangthai) VALUES (@Id, @ThoiGianChieu, @IdPhong,@Phim, @GiaVe, @TrangThai)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Id", id);
                     command.Parameters.AddWithValue("@ThoiGianChieu", thoigianchieu);
                     command.Parameters.AddWithValue("@IdPhong", idphong);
+                    command.Parameters.AddWithValue("@Phim", phim);
                     command.Parameters.AddWithValue("@GiaVe", giave);
                     command.Parameters.AddWithValue("@TrangThai", trangthai);
                     int rowsAffected = command.ExecuteNonQuery();
@@ -506,5 +739,169 @@ namespace QuanLyRapPhim
 
 
         //////////////////het lich chieu
+
+
+        public int LaySoGheTrongPhong(string maPhongChieu)
+        {
+            int soLuongGhe = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    string query = "SELECT SoLuongGhe FROM PhongChieu WHERE MaPhongChieu = @MaPhongChieu";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaPhongChieu", maPhongChieu);
+                        connection.Open();
+                        soLuongGhe = (int)command.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu có
+                Console.WriteLine("Lỗi: " + ex.Message);
+            }
+            return soLuongGhe;
+        }
+
+
+        public int LaySoGheMoiHang(string maPhongChieu)
+        {
+            int soGheMoiHang = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    string query = "SELECT SoGheMoiHang FROM PhongChieu WHERE MaPhongChieu = @MaPhongChieu";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaPhongChieu", maPhongChieu);
+                        connection.Open();
+                        soGheMoiHang = (int)command.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu có
+                Console.WriteLine("Lỗi: " + ex.Message);
+            }
+            return soGheMoiHang;
+        }
+        ///////vé
+        public bool ThemVe(string maLichChieu, List<int> danhSachGhe, decimal giaVe, string maKhachHang)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    connection.Open();
+
+                    foreach (int soGhe in danhSachGhe)
+                    {
+                        string maVe = RandomMaVe(); // Tạo chuỗi mã vé ngẫu nhiên
+                        DateTime ngayBanVe = DateTime.Now; // Lấy thời gian hiện tại
+
+                        // Kiểm tra mã vé có tồn tại trong cơ sở dữ liệu chưa
+                        while (KiemTraMaVeTonTai(maVe))
+                        {
+                            maVe = RandomMaVe();
+                        }
+
+                        string query = "INSERT INTO Ve (MaVe, idlichchieu, Ghe, NgayBanVe, GiaVe, MaKhachHang) VALUES (@MaVe, @IdLichChieu, @Ghe, @NgayBanVe, @GiaVe, @MaKhachHang)";
+                        using (var command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@MaVe", maVe);
+                            command.Parameters.AddWithValue("@IdLichChieu", maLichChieu);
+                            command.Parameters.AddWithValue("@Ghe", soGhe);
+                            command.Parameters.AddWithValue("@NgayBanVe", ngayBanVe);
+                            command.Parameters.AddWithValue("@GiaVe", giaVe);
+                            command.Parameters.AddWithValue("@MaKhachHang", maKhachHang);
+
+                            int rowsAffected = command.ExecuteNonQuery();
+                            if (rowsAffected <= 0)
+                            {
+                                return false; // Trả về false nếu thêm vé không thành công
+                            }
+                        }
+                    }
+
+                    return true; // Trả về true khi thêm vé thành công cho tất cả ghế
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+        }
+
+        private string RandomMaVe()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, 7)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private bool KiemTraMaVeTonTai(string maVe)
+        {
+            using (var connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM Ve WHERE MaVe = @MaVe";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@MaVe", maVe);
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+        public List<int> LayDanhSachGheDaBan(string maLichChieu)
+        {
+            // Khởi tạo danh sách lưu trữ vị trí của các ghế đã bán
+            List<int> danhSachGheDaBan = new List<int>();
+
+            // Mở kết nối đến cơ sở dữ liệu
+            using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Tạo câu truy vấn SQL để lấy danh sách ghế đã bán dựa trên mã lịch chiếu
+                    string query = "SELECT Ghe FROM Ve WHERE IdLichChieu = @MaLichChieu";
+
+                    // Tạo đối tượng SqlCommand
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Thêm tham số @MaLichChieu vào câu truy vấn
+                        command.Parameters.AddWithValue("@MaLichChieu", maLichChieu);
+
+                        // Thực thi câu truy vấn và đọc dữ liệu từ bảng Ve
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            // Duyệt qua các dòng kết quả
+                            while (reader.Read())
+                            {
+                                // Lấy giá trị cột Ghe từ mỗi dòng và thêm vào danh sách danhSachGheDaBan
+                                int soGhe = reader.GetInt32(0);
+                                danhSachGheDaBan.Add(soGhe);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Xử lý ngoại lệ
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            // Trả về danh sách các ghế đã bán
+            return danhSachGheDaBan;
+        }
     }
 }
