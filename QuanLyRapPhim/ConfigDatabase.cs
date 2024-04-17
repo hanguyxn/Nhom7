@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace QuanLyRapPhim
 {
@@ -20,6 +21,7 @@ namespace QuanLyRapPhim
         public static string dataSource { get; private set; }
         public static string initialCatalog { get; private set; }
         public static string connectionString { get; private set; }
+
         private void checkConnectBtn_Click(object sender, EventArgs e)
         {
             dataSource = dataSourceTextBox.Text;
@@ -28,13 +30,25 @@ namespace QuanLyRapPhim
 
             if (database.TestConnection())
             {
-                
-                MessageBox.Show("Kết nối thành công!", "Cấu hình database", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Lưu thông tin tài khoản vào cài đặt
+                Properties.Settings.Default.dataSource = dataSource;
+                Properties.Settings.Default.initialCatalog = initialCatalog;
+                Properties.Settings.Default.Save();
+                //MessageBox.Show("Kết nối thành công!", "Cấu hình database", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             else
             {
                 MessageBox.Show("Kết nối không thành công!", "Cấu hình database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ConfigDatabase_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.dataSource) && !string.IsNullOrEmpty(Properties.Settings.Default.initialCatalog))
+            {
+                dataSourceTextBox.Text = Properties.Settings.Default.dataSource;
+                initialCatalogTextBox.Text = Properties.Settings.Default.initialCatalog;
             }
         }
     }

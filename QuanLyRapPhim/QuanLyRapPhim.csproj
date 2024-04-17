@@ -85,6 +85,12 @@
     <Compile Include="Control\QuanLyUserControl.Designer.cs">
       <DependentUpon>QuanLyUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Control\ThongKeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ThongKeControl.Designer.cs">
+      <DependentUpon>ThongKeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database.cs" />
     <Compile Include="FormThanhToan.cs">
       <SubType>Form</SubType>
@@ -124,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Control\QuanLyUserControl.resx">
       <DependentUpon>QuanLyUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ThongKeControl.resx">
+      <DependentUpon>ThongKeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormThanhToan.resx">
       <DependentUpon>FormThanhToan.cs</DependentUpon>
@@ -205,6 +214,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cinema.ico" />
+    <None Include="Resources\icons8-day-48.png" />
+    <None Include="Resources\icons8-statistics-20.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

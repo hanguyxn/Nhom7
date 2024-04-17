@@ -113,6 +113,7 @@
             this.Controls.Add(this.label1);
             this.Name = "ConfigDatabase";
             this.Text = "ConfigDatabase";
+            this.Load += new System.EventHandler(this.ConfigDatabase_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

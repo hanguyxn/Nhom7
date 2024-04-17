@@ -65,6 +65,9 @@ namespace QuanLyRapPhim.Control
                 int soHang = soGheTrongPhong / soGheMoiHang;
                 int soGheThua = soGheTrongPhong % soGheMoiHang; // Số ghế thừa dư
 
+                // Padding bên phải
+                int paddingRight = 100;
+
                 // Tạo và hiển thị các nút ghế
                 for (int i = 0; i < soHang; i++)
                 {
@@ -76,7 +79,7 @@ namespace QuanLyRapPhim.Control
                         btnGhe.Width = 60; // Thiết lập chiều rộng cho nút
                         btnGhe.Height = 30; // Thiết lập chiều cao cho nút
                         btnGhe.Top = i * 40; // Tính toạ độ top
-                        btnGhe.Left = j * 70; // Tính toạ độ left
+                        btnGhe.Left = j * 70 + (paddingRight * j); // Tính toạ độ left với padding bên phải
 
                         // Kiểm tra xem ghế có trong danh sách ghế đã bán hay không
                         if (gheDaBan.Contains(soThuTuGhe))
@@ -99,7 +102,7 @@ namespace QuanLyRapPhim.Control
                         // Xử lý sự kiện click cho ghế
                         btnGhe.Click += (sender, e) =>
                         {
-                            XuLyClickGhe(sender as Button, soThuTuGhe, gheDaChon,gheDaBan);
+                            XuLyClickGhe(sender as Button, soThuTuGhe, gheDaChon, gheDaBan);
                         };
 
                         ghePanel.Controls.Add(btnGhe); // Thêm nút vào ghePanel
@@ -117,7 +120,7 @@ namespace QuanLyRapPhim.Control
                         btnGhe.Width = 60; // Thiết lập chiều rộng cho nút
                         btnGhe.Height = 30; // Thiết lập chiều cao cho nút
                         btnGhe.Top = soHang * 40; // Tính toạ độ top
-                        btnGhe.Left = j * 70; // Tính toạ độ left
+                        btnGhe.Left = j * 70 + (paddingRight * j); // Tính toạ độ left với padding bên phải
 
                         // Kiểm tra xem ghế có trong danh sách ghế đã bán hay không
                         if (gheDaBan.Contains(soThuTuGhe))
@@ -149,6 +152,7 @@ namespace QuanLyRapPhim.Control
                 }
             }
         }
+
 
         // Hàm xử lý sự kiện khi click vào ghế
         private static void XuLyClickGhe(Button btnGhe, int soThuTuGhe, List<int> gheDaChon, List<int> gheDaBan)

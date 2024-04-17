@@ -36,14 +36,15 @@
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.configDbBtn = new System.Windows.Forms.Button();
+            this.saveLoginInfo = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(59, 159);
+            this.loginBtn.Location = new System.Drawing.Point(39, 168);
             this.loginBtn.Name = "loginBtn";
-            this.loginBtn.Size = new System.Drawing.Size(301, 52);
+            this.loginBtn.Size = new System.Drawing.Size(321, 52);
             this.loginBtn.TabIndex = 0;
             this.loginBtn.Text = "Đăng nhập";
             this.loginBtn.UseVisualStyleBackColor = true;
@@ -58,6 +59,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.saveLoginInfo);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.passwordTextBox);
             this.groupBox1.Controls.Add(this.label1);
@@ -105,6 +107,16 @@
             this.configDbBtn.UseVisualStyleBackColor = true;
             this.configDbBtn.Click += new System.EventHandler(this.configDbBtn_Click);
             // 
+            // saveLoginInfo
+            // 
+            this.saveLoginInfo.AutoSize = true;
+            this.saveLoginInfo.Location = new System.Drawing.Point(39, 129);
+            this.saveLoginInfo.Name = "saveLoginInfo";
+            this.saveLoginInfo.Size = new System.Drawing.Size(208, 24);
+            this.saveLoginInfo.TabIndex = 5;
+            this.saveLoginInfo.Text = "Lưu thông tin đăng nhập";
+            this.saveLoginInfo.UseVisualStyleBackColor = true;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -132,6 +144,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.Button configDbBtn;
+        private System.Windows.Forms.CheckBox saveLoginInfo;
     }
 }
 

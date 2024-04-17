@@ -327,7 +327,36 @@ namespace QuanLyRapPhim
             return userRole;
         }
 
+        public string GetNameFromDatabase(string username)
+        {
+            string userRole = ""; // Vai trò của người dùng
 
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigDatabase.connectionString))
+                {
+                    string query = "SELECT HoTen FROM Users WHERE Username = @Username";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", username);
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                userRole = reader["HoTen"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return userRole;
+        }
         public int LaySoLuongGheMoiHang(string maPhong)
         {
             int soLuongGhe = 0;

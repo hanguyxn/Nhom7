@@ -18,10 +18,13 @@ namespace QuanLyRapPhim
     
     public partial class MainForm : Form
     {
-        private QuanLyPhimControl quanLyPhimControl; // Khai báo control ThemPhimControl
-        private QuanLyUserControl quanLyUserControl;
-        private BanVeControl banVeControl;
-        Database database = new Database();
+        private QuanLyPhimControl quanLyPhimControl = new QuanLyPhimControl();
+        private QuanLyUserControl quanLyUserControl = new QuanLyUserControl();
+        private BanVeControl banVeControl = new BanVeControl();
+        private ThongKeControl thongKeControl = new ThongKeControl();
+        private Database database = new Database();
+        private string username = LoginForm.username;
+        private static bool IsVisible = true;
 
         public MainForm()
         {
@@ -31,11 +34,6 @@ namespace QuanLyRapPhim
         private static MainForm instance;
 
        
-
-        // Đánh dấu trạng thái của form chính
-        private static bool IsVisible = true;
-        string username = LoginForm.username;
-        // Phương thức tĩnh để ẩn hoặc hiển thị form chính
         public static void ToggleMainFormVisibility()
         {
             IsVisible = !IsVisible;
@@ -50,38 +48,8 @@ namespace QuanLyRapPhim
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            userBtn.FlatStyle = FlatStyle.Flat;
-            userBtn.FlatAppearance.BorderSize = 0;
+            InitializeUserInterface();
 
-            phimBtn.FlatStyle = FlatStyle.Flat;
-            phimBtn.FlatAppearance.BorderSize = 0;
-
-            banVeBtn.FlatStyle = FlatStyle.Flat;
-            banVeBtn.FlatAppearance.BorderSize = 0;
-
-
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.FlatAppearance.BorderSize = 0;
-            banVeBtn.Enabled = true;
-            if (banVeBtn.Enabled)
-            {
-                banVeBtn.BackColor = Color.White;
-            }
-            quanLyPhimControl = new QuanLyPhimControl(); // Khởi tạo control ThemPhimControl
-            quanLyUserControl = new QuanLyUserControl(); // Khởi tạo control ThemPhimControl        }
-            banVeControl = new BanVeControl(); // Khởi tạo control ThemPhimControl        }
-            ShowControl(banVeControl);
-            //banVeBtn.Text = username;
-            if (database.GetUserRoleFromDatabase(username) != "admin     ")
-            {
-                userBtn.Enabled = false;
-                phimBtn.Enabled = false;
-                button1.Enabled = false;
-
-                userBtn.Hide();
-                phimBtn.Hide();
-                button1.Hide();
-            }
         }
 
 
@@ -91,7 +59,44 @@ namespace QuanLyRapPhim
         }
 
 
+        private void ToggleButtonAppearanceX(Button clickedButton)
+        {
+            userBtn.BackColor = phimBtn.BackColor = banVeBtn.BackColor = thongKeBtn.BackColor = Color.PeachPuff;
+            clickedButton.BackColor = Color.White;
+        }
 
+        private void InitializeUserInterface()
+        {
+            userBtn.FlatStyle = FlatStyle.Flat;
+            userBtn.FlatAppearance.BorderSize = 0;
+
+            phimBtn.FlatStyle = FlatStyle.Flat;
+            phimBtn.FlatAppearance.BorderSize = 0;
+
+            banVeBtn.FlatStyle = FlatStyle.Flat;
+            banVeBtn.FlatAppearance.BorderSize = 0;
+
+            thongKeBtn.FlatStyle = FlatStyle.Flat;
+            thongKeBtn.FlatAppearance.BorderSize = 0;
+            banVeBtn.Enabled = true;
+            if (banVeBtn.Enabled)
+            {
+                banVeBtn.BackColor = Color.White;
+            }
+            ShowControl(banVeControl);
+            if (!database.GetUserRoleFromDatabase(username).Equals("admin     "))
+            {
+                userBtn.Enabled = false;
+                phimBtn.Enabled = false;
+                thongKeBtn.Enabled = false;
+
+                userBtn.Hide();
+                phimBtn.Hide();
+                thongKeBtn.Hide();
+            }
+
+            titleTop.Text = "Xin chào " + database.GetNameFromDatabase(username);
+        }
         private void mainPanel_Paint(object sender, PaintEventArgs e)
         {
             
@@ -110,36 +115,25 @@ namespace QuanLyRapPhim
         private void userBtn_Click(object sender, EventArgs e)
         {
             ShowControl(quanLyUserControl);
-            if (userBtn.Enabled)
-            {
-                userBtn.BackColor = Color.White;
-                phimBtn.BackColor = Color.PeachPuff;
-                banVeBtn.BackColor = Color.PeachPuff;
-                banVeBtn.BackColor = Color.PeachPuff;
-            }
+            ToggleButtonAppearanceX(userBtn);
         }
 
         private void phimBtn_Click(object sender, EventArgs e)
         {
             ShowControl(quanLyPhimControl);
-            if (phimBtn.Enabled)
-            {
-                phimBtn.BackColor = Color.White;
-                userBtn.BackColor = Color.PeachPuff;
-                banVeBtn.BackColor = Color.PeachPuff;
-            }
+            ToggleButtonAppearanceX(phimBtn);
         }
 
         private void banVeBtn_Click(object sender, EventArgs e)
         {
             ShowControl(banVeControl);
-            if (banVeBtn.Enabled) 
-            {
-                phimBtn.BackColor = Color.PeachPuff;
-                userBtn.BackColor = Color.PeachPuff;
-                banVeBtn.BackColor = Color.White;
-            }
+            ToggleButtonAppearanceX(banVeBtn);
         }
-      
+
+        private void thongKeBtn_Click(object sender, EventArgs e)
+        {
+            ShowControl(thongKeControl);
+            ToggleButtonAppearanceX(thongKeBtn);
+        }
     }
 }
